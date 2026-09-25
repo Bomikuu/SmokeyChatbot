@@ -5,4 +5,5 @@ __pycache__/
 media/
 node_modules/
 dist/
+*.tsbuildinfo
 .venv/
