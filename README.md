@@ -1,0 +1,100 @@
+# SmokeyChatBot
+
+A website-installed chatbot with three launcher styles: Smokey, your image or sprite sheet, or a standard chat button. This is a separate repository from PixelPopup; Smokey's default sprite and motion are adapted from `RoamingCatMascot.jsx`.
+
+## Repository layout
+
+- `backend/` — Django API, owner accounts, site settings, knowledge indexing, quotas, and OpenAI calls.
+- `dashboard/` — React + Tailwind CSS + shadcn/ui owner dashboard.
+- `widget/` — dependency-free browser widget and npm entry point. `smokeychatbot.js` is a ready-to-serve classic script; no build step is needed for plain HTML installation.
+
+## Local setup
+
+From this repository in WSL/Linux:
+
+```bash
+cp .env.example .env
+# Edit .env and set OPENAI_API_KEY before uploading knowledge or sending chat messages.
+set -a; source .env; set +a
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+cd backend
+python manage.py migrate
+python manage.py runserver 127.0.0.1:8000
+```
+
+In another terminal:
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`. With the local console email backend, the sign-up verification link prints in the Django terminal. An OpenAI API key is needed for upload indexing and chat. The owner dashboard can be explored before adding a key.
+
+Set `VITE_PUBLIC_API_URL` to the browser-accessible Django origin when it is not `http://localhost:8000`. The dashboard's `/api` requests use a Vite proxy in development; production should serve `/api` through the same origin as the dashboard.
+
+## Install on a website
+
+Add the exact website origin in the owner dashboard first. Origins include scheme and port, for example `https://example.com` or `http://localhost:3000`.
+
+### Plain HTML
+
+```html
+<script
+  src="https://YOUR_API_HOST/api/widget/script"
+  data-site-id="YOUR_SITE_ID"
+  data-api-base-url="https://YOUR_API_HOST"
+  defer
+></script>
+```
+
+The script mounts directly in the page DOM using Shadow DOM styles. It does not use `<embed>` or an iframe.
+
+### npm / JavaScript
+
+Until the package is published, install it from this local repository:
+
+```bash
+npm install /path/to/SmokeyChatBot/widget
+```
+
+```js
+import { mountSmokeyChatBot } from "smokeychatbot-widget";
+
+const widget = mountSmokeyChatBot({
+  siteId: "YOUR_SITE_ID",
+  apiBaseUrl: "https://YOUR_API_HOST",
+});
+
+// If your app removes the host page component:
+widget.destroy();
+```
+
+The widget also exposes `open()` and `close()`. Add `data-smokey-exclusion` to a host-page element that the roaming mascot should avoid. Host Content Security Policy must allow the script, images, and API connection from `YOUR_API_HOST`.
+
+## Answer modes and privacy
+
+- **Portfolio / store:** Upload public PDF, TXT, or Markdown files, or paste text. Each site gets its own OpenAI vector store. Relevant excerpts are retrieved before a GPT-6 Luna response. A grounded answer must cite a source marker; unsupported questions receive a refusal. Store mode does not access live orders or inventory.
+- **General:** GPT-6 Luna answers broad questions. It has no live web search.
+- Visitor chat history stays in browser `sessionStorage` for that tab and is sent with each question; Django does not store transcripts. The widget's Clear control erases the session history. API requests use `store: false`. Uploaded files and vector-store content remain with OpenAI until removed; OpenAI's abuse-monitoring retention may still apply. See [OpenAI data controls](https://developers.openai.com/api/docs/guides/your-data).
+- Only upload content and mascot images that may be shown publicly. Custom PNG/WebP images are limited to 5 MB; knowledge files to 10 MB; pasted text to 50,000 characters.
+
+## Production requirements
+
+Set `DJANGO_DEBUG=0`, a unique `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS`, `DATABASE_URL` for PostgreSQL, `REDIS_URL` for shared rate limits, `FRONTEND_URL`, HTTPS, and working SMTP credentials. Use durable storage for `backend/media/` and a reverse proxy that routes `/api` to Django and serves the dashboard. Configure an OpenAI project spend limit in addition to the app's per-IP, per-site, per-owner, and global request limits. The single service API key must stay on the server.
+
+The free beta limits owners to five sites and each site to 25 knowledge sources. Default daily limits are configurable through `.env.example`. Dashboard usage reports successful chat requests and token totals; quota attempts are counted in Redis before calling OpenAI, including failed requests. The local development cache resets on restart; production requires Redis.
+
+## Manual acceptance checklist
+
+1. Sign up, verify by email, and confirm an owner cannot access another owner's site ID.
+2. Configure an allowed origin, install with both the script and npm entry point, and confirm an unlisted origin is rejected.
+3. Switch between Smokey, custom static image, custom sprite, and standard launcher; verify desktop dragging, optional roaming, and stationary mobile behavior.
+4. Add and delete a source, wait for its status to become ready, then ask supported and unsupported portfolio/store questions. Confirm supported replies show the source title.
+5. Try general mode, clear chat history, reach a quota, and observe error recovery when OpenAI is unavailable.
+6. Check keyboard navigation, visible focus, and reduced-motion behavior.
+
+No test suites or builds were run while creating this repository, per the source project's instructions.

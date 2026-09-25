@@ -1,0 +1,18 @@
+# SmokeyChatBot design context
+
+The cat is the recognizable character. The chat panel and dashboard should stay clear and quiet so the owner's content remains the point of the interaction.
+
+## Visual system
+
+- Default accent: cobalt `#2f5bff`; hover `#2149dc`. Each site can set one six-digit accent for its widget.
+- Dashboard background: cloud `#f7f9fc`; surfaces: white; main ink `#0f172a`; secondary slate `#475569`; borders `#dce4ef`.
+- Typography: Instrument Sans when available, Arial fallback. Short, direct labels. No decorative code or faux terminal language in user-facing UI.
+- Controls use 8 px corners, compact panels 12–16 px, and visible 1 px borders. Reserve soft shadows for the floating chat panel and launcher.
+- The widget uses its own Shadow DOM stylesheet. Dashboard components are built with React, Tailwind CSS, and local shadcn/ui primitives.
+
+## Behavior
+
+- Design variance: moderate. Motion intensity: low. Visual density: medium.
+- The mascot may roam on desktop, but the chat panel and important page controls remain readable. On mobile the launcher is stationary.
+- Respect reduced motion, keyboard focus, and semantic controls. Loading, error, empty, and quota states must explain what the visitor or owner can do next.
+- Default to a conventional launcher when a custom mascot has not been uploaded.
