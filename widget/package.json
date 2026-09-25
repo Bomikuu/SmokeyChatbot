@@ -1,0 +1,9 @@
+{
+  "name": "smokeychatbot-widget",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Framework-independent SmokeyChatBot website widget",
+  "exports": {".": "./index.mjs"},
+  "browser": "./smokeychatbot.js",
+  "files": ["index.mjs", "smokeychatbot.js"]
+}
