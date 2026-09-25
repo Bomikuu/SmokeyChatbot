@@ -1,6 +1,49 @@
 @import "tailwindcss";
 
-:root { font-family: "Instrument Sans", Arial, sans-serif; color: #0f172a; background: #f7f9fc; font-synthesis: none; }
+:root {
+  font-family: "Instrument Sans", Arial, sans-serif;
+  color: #0f172a;
+  background: #f7f9fc;
+  font-synthesis: none;
+  --background: #f7f9fc;
+  --foreground: #0f172a;
+  --card: #fff;
+  --card-foreground: #0f172a;
+  --primary: #2f5bff;
+  --primary-foreground: #fff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --accent: #eaf0fa;
+  --accent-foreground: #0f172a;
+  --destructive: #b42318;
+  --destructive-foreground: #fff;
+  --border: #dce4ef;
+  --input: #cbd5e1;
+  --ring: #2f5bff;
+  --radius: .5rem;
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-md: var(--radius);
+}
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 button { cursor: pointer; }

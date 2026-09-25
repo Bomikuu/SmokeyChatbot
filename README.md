@@ -36,6 +36,16 @@ Open `http://localhost:5173`. With the local console email backend, the sign-up 
 
 Set `VITE_PUBLIC_API_URL` to the browser-accessible Django origin when it is not `http://localhost:8000`. The dashboard's `/api` requests use a Vite proxy in development; production should serve `/api` through the same origin as the dashboard.
 
+### Dashboard UI components
+
+The dashboard uses locally owned, design-customized [shadcn/ui](https://ui.shadcn.com/docs) new-york components for Button, Card, Input, Textarea, and Badge. `dashboard/components.json`, the `@/*` alias, and Tailwind theme tokens are configured so more components can be added with the official CLI from `dashboard/`:
+
+```bash
+npx shadcn@latest add dialog
+```
+
+Review generated styles against `DESIGN.md` before using a new component. shadcn/ui adds component source to this repository; it is not a runtime component package.
+
 ## Install on a website
 
 Add the exact website origin in the owner dashboard first. Origins include scheme and port, for example `https://example.com` or `http://localhost:3000`.
