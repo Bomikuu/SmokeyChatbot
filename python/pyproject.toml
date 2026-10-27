@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smokey-assistant"
+version = "0.1.0"
+description = "Tenant-scoped reporting assistant with host-owned authorization and facts"
+requires-python = ">=3.11"
+dependencies = ["Django>=5.2,<6", "requests>=2.32,<3", "cryptography>=44", "Pillow>=11,<13"]
+
+[tool.setuptools.packages.find]
+include = ["smokey_assistant*"]
+
+[tool.setuptools.package-data]
+smokey_assistant = ["assets/*.webp"]
