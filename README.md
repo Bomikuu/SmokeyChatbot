@@ -8,7 +8,40 @@ A website-installed chatbot with three launcher styles: Smokey, your image or sp
 - `dashboard/` — React + TypeScript + Tailwind CSS + official shadcn/ui owner dashboard.
 - `widget/` — dependency-free browser widget and npm entry point. `smokeychatbot.js` is a ready-to-serve classic script; no build step is needed for plain HTML installation.
 
-## Local setup
+## Standalone business dashboard
+
+Start PixelCore's backend and Celery services with the Smokey package installed
+and its server encryption key configured. From this repository:
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173** and sign in with a connected PixelCore business
+account. The dashboard is a native React application with Overview, Ask Smokey,
+Reports, AI connections, Appearance and Usage & limits. Owner/admin users configure
+providers; managers can generate and read reports. Businesses, AI credentials,
+mascots, presentation settings, usage and saved reports use PixelCore's existing
+business-scoped APIs. Enable Smokey for the selected business before using it.
+
+The Vite development proxy maps `/business-api` to PixelCore on port 8000 and
+rewrites the HttpOnly refresh-cookie path to isolate the standalone login.
+Access tokens remain in memory; provider keys are never stored in browser storage.
+Copy `dashboard/.env.example` to `dashboard/.env.local` to change local origins.
+Never place provider keys in Vite environment variables.
+
+For production, serve the dashboard with an equivalent same-origin authenticated
+reverse proxy for `/business-api/` (rewrite to `/api/` and cookie paths from
+`/api/auth/` to `/business-api/auth/`). Use HTTPS and the host's secure cookie
+configuration. This local Vite setup is development-only.
+
+Existing public website chatbot management remains at
+**http://localhost:5173/websites** with its separate owner login and Django API.
+Its backend uses port 8001 so it can run alongside PixelCore.
+
+## Local website chatbot setup
 
 From this repository in WSL/Linux:
 
@@ -21,7 +54,7 @@ source .venv/bin/activate
 pip install -r backend/requirements.txt
 cd backend
 python manage.py migrate
-python manage.py runserver 127.0.0.1:8000
+python manage.py runserver 127.0.0.1:8001
 ```
 
 In another terminal:
@@ -32,9 +65,9 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. With the local console email backend, the sign-up verification link prints in the Django terminal. An OpenAI API key is needed for upload indexing and chat. The owner dashboard can be explored before adding a key.
+Open `http://localhost:5173/websites`. With the local console email backend, the sign-up verification link prints in the Django terminal. An OpenAI API key is needed for upload indexing and chat. The owner dashboard can be explored before adding a key.
 
-Set `VITE_PUBLIC_API_URL` to the browser-accessible Django origin when it is not `http://localhost:8000`. The dashboard's `/api` requests use a Vite proxy in development; production should serve `/api` through the same origin as the dashboard.
+Set `VITE_PUBLIC_API_URL` to the browser-accessible Django origin when it is not `http://localhost:8001`. The dashboard's `/api` requests use a Vite proxy in development; production should serve `/api` through the same origin as the dashboard.
 
 ### Dashboard UI components
 
@@ -107,4 +140,28 @@ The free beta limits owners to five sites and each site to 25 knowledge sources.
 5. Try general mode, clear chat history, reach a quota, and observe error recovery when OpenAI is unavailable.
 6. Check keyboard navigation, visible focus, and reduced-motion behavior.
 
-No test suites or builds were run while creating this repository, per the source project's instructions.
+No production builds or browser acceptance checks have been run. Focused shared-module validation is recorded in [verification](docs/SHARED-FRONTEND-VERIFICATION.md).
+
+## Optional business reporting module
+
+The reusable `python/smokey_assistant` package integrates private, business-scoped
+reporting into PixelCore. It supports business-owned OpenAI, Anthropic, Gemini and
+OpenRouter connections, saved reports, quotas and cancellable background jobs.
+See [PixelCore installation](docs/PIXELCORE-INTEGRATION.md). This is separate from
+the public website widget and its existing knowledge-indexing workflow.
+
+The owner dashboard defaults to white/light surfaces and provides Light, Dark and
+System themes. Theme preferences stay local; provider credentials never do.
+
+
+## One frontend for standalone and host dashboards
+
+The business dashboard and floating mascot/chat drawer now share the React source
+in this repository. PixelCore mounts the module directly through a thin adapter,
+with Shadow DOM styles and its own authentication/theme. Standalone login remains
+at port 5173. Development uses the dedicated module server on port 5174; production
+uses trusted immutable ESM/CSS releases and a compatible channel manifest.
+
+See [local integration](docs/SHARED-FRONTEND.md),
+[releases and rollback](docs/SHARED-FRONTEND-RELEASES.md), and
+[verification / pending cutover gates](docs/SHARED-FRONTEND-VERIFICATION.md).

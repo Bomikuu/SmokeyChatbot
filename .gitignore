@@ -7,3 +7,8 @@ node_modules/
 dist/
 *.tsbuildinfo
 .venv/
+*.egg-info/
+dashboard/dist-module/
+releases/ui/*
+!releases/ui/.gitkeep
+.vite/

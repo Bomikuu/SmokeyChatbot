@@ -1,0 +1,24 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": [
+    "dashboard/src/features/business",
+    "dashboard/src/features/theme"
+  ],
+  "canonicalMap": "docs/SMOKEY-UI-CONTRACT.md",
+  "requiredCapabilities": [
+    "Select/Listbox",
+    "Date",
+    "Form",
+    "CRUD",
+    "Scrollbar"
+  ],
+  "ownership": {
+    "Select/Listbox": "authored",
+    "Date": "native"
+  },
+  "commands": {
+    "typecheck": "cd dashboard && npm run typecheck",
+    "insights": "cd dashboard && node scripts/check-business-insights.mjs",
+    "render": "cd dashboard && node scripts/check-assistant-render.mjs"
+  }
+}
