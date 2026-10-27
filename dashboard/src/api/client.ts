@@ -23,6 +23,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}): Pr
 
   const response = await fetch(`/api${path}`, {
     credentials: "include",
+    signal: options.signal ?? AbortSignal.timeout(15000),
     ...options,
     headers,
   });

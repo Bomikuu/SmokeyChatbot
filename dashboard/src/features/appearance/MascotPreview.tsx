@@ -36,14 +36,14 @@ export const MascotPreview = ({
         <CardTitle>Preview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="relative flex h-80 items-end justify-end overflow-hidden rounded-lg border border-[#dce4ef] bg-[#eef3fa] p-5">
-          <div className="absolute left-5 top-5 rounded-md border border-slate-200 bg-white px-3 py-2 text-xs text-slate-500">
+        <div className="relative flex h-80 items-end justify-end overflow-hidden rounded-lg border border-border bg-muted p-5">
+          <div className="absolute left-5 top-5 rounded-md border border-border bg-card px-3 py-2 text-xs text-muted-foreground">
             Your website
           </div>
           {mode === "standard" && (
             <div
               style={{ backgroundColor: accent }}
-              className="grid size-14 place-items-center rounded-2xl text-white"
+              className="grid size-14 place-items-center rounded-2xl text-primary-foreground"
             >
               <MessageSquare size={24} />
             </div>
@@ -81,12 +81,12 @@ export const MascotPreview = ({
             />
           )}
           {mode === "custom" && !hasAsset && (
-            <div className="grid size-24 place-items-center rounded-lg border border-dashed border-slate-300 bg-white text-xs text-slate-400">
+            <div className="grid size-24 place-items-center rounded-lg border border-dashed border-input bg-card text-xs text-muted-foreground">
               Upload image
             </div>
           )}
         </div>
-        <p className="mt-3 text-xs text-slate-500">
+        <p className="mt-3 text-xs text-muted-foreground">
           The live widget adapts its size and position to each visitor’s screen.
         </p>
       </CardContent>

@@ -4,6 +4,7 @@ import { signIn, signUp, type Owner } from "@/api/auth";
 import { Field } from "@/components/common/Field";
 import { Notice } from "@/components/common/Notice";
 import { Button } from "@/components/ui/button";
+import { MascotStatus } from "@/components/common/MascotStatus";
 import { Input } from "@/components/ui/input";
 import { errorMessage } from "@/lib/errors";
 
@@ -50,38 +51,40 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
 
   return (
     <main className="grid min-h-screen lg:grid-cols-[1.05fr_.95fr]">
-      <section className="flex flex-col justify-between bg-[#0b1733] p-8 text-white md:p-14">
+      <section className="flex flex-col justify-between bg-muted p-8 text-foreground md:p-14">
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-lg border border-white/20 bg-white/10">
+          <span className="grid size-10 place-items-center rounded-lg border border-border bg-card">
             <Cat size={22} />
           </span>
           <span className="text-lg font-bold tracking-tight">SmokeyChatBot</span>
         </div>
         <div className="max-w-xl py-24">
-          <p className="mb-5 text-xs font-bold uppercase tracking-[.2em] text-[#9bb9ff]">
+          <p className="mb-5 text-xs font-bold uppercase tracking-[.2em] text-primary">
             The website companion
           </p>
           <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-.04em] md:text-6xl">
             Answers that belong to your website.
           </h1>
-          <p className="mt-7 max-w-md text-lg leading-8 text-slate-300">
+          <p className="mt-7 max-w-md text-lg leading-8 text-muted-foreground">
             Give your visitors a helpful guide. Use Smokey, bring your own mascot, or keep the chat
             simple.
           </p>
         </div>
-        <p className="text-xs text-slate-400">A focused free beta for public website content.</p>
+        <p className="text-xs text-muted-foreground">
+          A focused free beta for public website content.
+        </p>
       </section>
 
       <section className="flex items-center justify-center px-6 py-14">
         <div className="w-full max-w-md space-y-7">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[.17em] text-[#2f5bff]">
+            <p className="text-xs font-bold uppercase tracking-[.17em] text-primary">
               Owner dashboard
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-.04em]">
               {view === "signup" ? "Create your account" : "Welcome back"}
             </h2>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               {view === "signup"
                 ? "Set up a site and add its knowledge in minutes."
                 : "Manage your chatbot and website content."}
@@ -96,6 +99,12 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
           <Notice message={error} error />
 
           <form onSubmit={submit} className="space-y-5">
+            {busy && (
+              <MascotStatus
+                state="searching"
+                label={view === "signup" ? "Creating your account…" : "Signing you in…"}
+              />
+            )}
             <Field label="Email address">
               <Input
                 type="email"
@@ -123,15 +132,16 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
             </Button>
           </form>
 
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             {view === "signup" ? "Already have an account?" : "New to SmokeyChatBot?"}{" "}
-            <button
+            <Button
+              variant="ghost"
               type="button"
-              className="font-semibold text-[#2f5bff] hover:underline"
+              className="font-semibold text-primary hover:underline"
               onClick={switchView}
             >
               {view === "signup" ? "Sign in" : "Create an account"}
-            </button>
+            </Button>
           </p>
         </div>
       </section>

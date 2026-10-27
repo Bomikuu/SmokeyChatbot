@@ -22,7 +22,7 @@ export const Field = ({ label, help, children }: FieldProps) => {
       {isControl ? (
         <label htmlFor={id}>{label}</label>
       ) : (
-        <p className="mb-[7px] text-[13px] font-semibold text-[#334155]">{label}</p>
+        <p className="mb-[7px] text-[13px] font-semibold text-foreground">{label}</p>
       )}
       {isControl ? cloneElement(children as ReactElement<{ id?: string }>, { id }) : children}
       {help && <p className="field-help">{help}</p>}

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Cat,
   Code2,
@@ -51,30 +52,31 @@ export const DashboardContent = ({
             <div>
               <div className="mb-2 flex items-center gap-2">
                 <Badge variant="secondary">Site</Badge>
-                <span className="text-xs capitalize text-slate-500">{site.mode} mode</span>
+                <span className="text-xs capitalize text-muted-foreground">{site.mode} mode</span>
               </div>
               <h1 className="text-3xl font-semibold tracking-[-.04em] md:text-4xl">{site.name}</h1>
-              <p className="mt-2 text-sm text-slate-500">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Configure the website companion your visitors will meet.
               </p>
             </div>
-            <span className="mono break-all text-xs text-slate-400">{site.id}</span>
+            <span className="mono break-all text-xs text-muted-foreground">{site.id}</span>
           </div>
           <nav
             aria-label="Site sections"
-            className="mb-7 flex gap-1 overflow-x-auto border-b border-[#dce4ef]"
+            className="mb-7 flex gap-1 overflow-x-auto border-b border-border"
           >
             {sections.map(({ id, label, Icon }) => (
-              <button
+              <Button
+                variant="ghost"
                 key={id}
                 type="button"
                 onClick={() => onSectionChange(id)}
                 aria-current={section === id ? "page" : undefined}
-                className={`flex shrink-0 items-center gap-2 border-b-2 px-3 py-3 text-sm font-medium ${section === id ? "border-[#2f5bff] text-[#2149dc]" : "border-transparent text-slate-500 hover:text-slate-900"}`}
+                className={`flex shrink-0 items-center gap-2 border-b-2 px-3 py-3 text-sm font-medium ${section === id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}
               >
                 <Icon size={16} />
                 {label}
-              </button>
+              </Button>
             ))}
           </nav>
           {section === "overview" && <Overview key={site.id} site={site} />}
@@ -88,13 +90,13 @@ export const DashboardContent = ({
       ) : (
         <div className="flex min-h-[70vh] items-center justify-center">
           <div className="max-w-md text-center">
-            <span className="mx-auto grid size-16 place-items-center rounded-2xl bg-[#eff6ff] text-[#2f5bff]">
+            <span className="mx-auto grid size-16 place-items-center rounded-2xl bg-accent text-primary">
               <MessageSquare size={30} />
             </span>
             <h1 className="mt-5 text-3xl font-semibold tracking-tight">
               Create your first chatbot
             </h1>
-            <p className="mt-3 text-sm leading-6 text-slate-500">
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
               Give it a site name in the sidebar, then add public information it can answer from.
             </p>
           </div>

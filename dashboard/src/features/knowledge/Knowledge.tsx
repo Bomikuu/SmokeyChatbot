@@ -10,6 +10,7 @@ import {
 import { DeleteConfirmation } from "@/components/common/DeleteConfirmation";
 import { Field } from "@/components/common/Field";
 import { Notice } from "@/components/common/Notice";
+import { MascotStatus } from "@/components/common/MascotStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,13 +26,19 @@ export const Knowledge = ({ site }: { site: Site }) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileInputKey, setFileInputKey] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [loadingSources, setLoadingSources] = useState(true);
   const [activeSourceId, setActiveSourceId] = useState<number | null>(null);
   const [sourceToDelete, setSourceToDelete] = useState<KnowledgeSource | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
   const load = useCallback(async () => {
-    setSources(await listSources(site.id));
+    setLoadingSources(true);
+    try {
+      setSources(await listSources(site.id));
+    } finally {
+      setLoadingSources(false);
+    }
   }, [site.id]);
 
   useEffect(() => {
@@ -105,7 +112,7 @@ export const Knowledge = ({ site }: { site: Site }) => {
       <Card>
         <CardHeader>
           <CardTitle>Add knowledge</CardTitle>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Add only information you want website visitors to see. Portfolio and store answers use
             these sources.
           </p>
@@ -160,6 +167,19 @@ export const Knowledge = ({ site }: { site: Site }) => {
                 />
               </Field>
             )}
+            {(loadingSources || busy || activeSourceId !== null) && (
+              <MascotStatus
+                site={site}
+                state="searching"
+                label={
+                  busy
+                    ? "Saving your source and starting indexing…"
+                    : activeSourceId !== null
+                      ? "Updating your knowledge source…"
+                      : "Loading your knowledge sources…"
+                }
+              />
+            )}
             <Notice message={notice} />
             <Notice message={error} error />
             <Button type="submit" disabled={busy || (mode === "file" && !file)}>
@@ -174,7 +194,7 @@ export const Knowledge = ({ site }: { site: Site }) => {
         <CardHeader className="flex-row items-center justify-between">
           <div>
             <CardTitle>Sources</CardTitle>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               {sources.length} of 25 allowed in the free beta
             </p>
           </div>
@@ -199,13 +219,15 @@ export const Knowledge = ({ site }: { site: Site }) => {
                   className="flex flex-wrap items-center justify-between gap-3 py-4"
                 >
                   <div className="flex min-w-0 items-start gap-3">
-                    <FileText size={18} className="mt-0.5 shrink-0 text-[#2f5bff]" />
+                    <FileText size={18} className="mt-0.5 shrink-0 text-primary" />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold">{source.title}</p>
-                      <p className="mt-1 text-xs text-slate-500">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {source.kind} · {source.status}
                       </p>
-                      {source.error && <p className="mt-1 text-xs text-red-700">{source.error}</p>}
+                      {source.error && (
+                        <p className="mt-1 text-xs text-destructive">{source.error}</p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -237,7 +259,7 @@ export const Knowledge = ({ site }: { site: Site }) => {
               ))}
             </ul>
           ) : (
-            <p className="py-8 text-center text-sm text-slate-500">
+            <p className="py-8 text-center text-sm text-muted-foreground">
               No sources yet. Add one above to teach this chatbot about your site.
             </p>
           )}

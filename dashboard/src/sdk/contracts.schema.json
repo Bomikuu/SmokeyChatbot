@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Smokey release manifest v1",
+  "type": "object",
+  "required": ["schemaVersion", "release", "adapter", "hostApi", "entry", "stylesheet", "assets"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "release": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "adapter": { "$ref": "#/$defs/compatibility" },
+    "hostApi": { "$ref": "#/$defs/compatibility" },
+    "entry": { "type": "string" },
+    "stylesheet": { "type": "string" },
+    "assets": { "type": "string" }
+  },
+  "$defs": {
+    "compatibility": {
+      "type": "object",
+      "required": ["major", "minMinor"],
+      "properties": {
+        "major": { "type": "integer", "minimum": 1 },
+        "minMinor": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

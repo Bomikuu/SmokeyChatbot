@@ -48,11 +48,11 @@ export const Overview = ({ site }: { site: Site }) => {
         {stats.map((stat) => (
           <Card key={stat.label}>
             <CardContent>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {stat.label}
               </p>
               <p className="mt-3 text-3xl font-semibold capitalize">{stat.value ?? "—"}</p>
-              <p className="mt-1 text-xs text-slate-500">{stat.detail}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{stat.detail}</p>
             </CardContent>
           </Card>
         ))}
@@ -63,7 +63,7 @@ export const Overview = ({ site }: { site: Site }) => {
           <CardTitle>Getting started</CardTitle>
         </CardHeader>
         <CardContent>
-          <ol className="space-y-3 text-sm text-slate-600">
+          <ol className="space-y-3 text-sm text-muted-foreground">
             <li>1. Add your website’s exact origin in Site settings.</li>
             <li>2. Upload public documents or paste content in Knowledge.</li>
             <li>3. Choose your launcher in Appearance.</li>

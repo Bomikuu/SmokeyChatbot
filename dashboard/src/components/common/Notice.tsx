@@ -11,8 +11,8 @@ export const Notice = ({ message, error = false }: NoticeProps) => {
       role={error ? "alert" : "status"}
       className={`rounded-md border px-4 py-3 text-sm ${
         error
-          ? "border-red-200 bg-red-50 text-red-800"
-          : "border-blue-200 bg-blue-50 text-[#2149dc]"
+          ? "border-destructive/30 bg-destructive/10 text-destructive"
+          : "border-primary/30 bg-accent text-primary"
       }`}
     >
       {message}

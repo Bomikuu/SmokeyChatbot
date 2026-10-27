@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { errorMessage } from "@/lib/errors";
 import type { Site } from "@/types/site";
 import type { SiteSection } from "./sections";
+import { ThemeSelect } from "@/features/theme/ThemeSelect";
 
 interface DashboardSidebarProps {
   owner: Owner;
@@ -44,28 +45,32 @@ export const DashboardSidebar = ({
   };
 
   return (
-    <aside className="border-b border-[#dce4ef] bg-white lg:min-h-screen lg:border-b-0 lg:border-r">
-      <div className="flex items-center gap-3 border-b border-[#edf1f5] px-6 py-5">
-        <span className="grid size-9 place-items-center rounded-lg bg-[#2f5bff] text-white">
+    <aside className="border-b border-border bg-card lg:min-h-screen lg:border-b-0 lg:border-r">
+      <div className="flex items-center gap-3 border-b border-border px-6 py-5">
+        <span className="grid size-9 place-items-center rounded-lg bg-primary text-primary-foreground">
           <Cat size={20} />
         </span>
         <span className="text-base font-bold tracking-tight">SmokeyChatBot</span>
       </div>
       <div className="p-4">
-        <p className="px-2 text-[11px] font-bold uppercase tracking-[.15em] text-slate-400">
+        <div className="mb-5">
+          <ThemeSelect />
+        </div>
+        <p className="px-2 text-[11px] font-bold uppercase tracking-[.15em] text-muted-foreground">
           Your sites
         </p>
         <div className="mt-3 space-y-1">
           {sites.map((site) => (
-            <button
+            <Button
+              variant="ghost"
               key={site.id}
               type="button"
               onClick={() => onSelect(site.id, "overview")}
-              className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm ${selectedId === site.id ? "bg-[#eff6ff] font-semibold text-[#2149dc]" : "text-slate-600 hover:bg-slate-100"}`}
+              className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm ${selectedId === site.id ? "bg-accent font-semibold text-primary" : "text-muted-foreground hover:bg-muted"}`}
             >
               <span className="truncate">{site.name}</span>
               <ChevronRight size={15} />
-            </button>
+            </Button>
           ))}
         </div>
         <form onSubmit={create} className="mt-5 space-y-2">
@@ -91,8 +96,8 @@ export const DashboardSidebar = ({
           </Button>
         </form>
       </div>
-      <div className="mt-6 border-t border-[#edf1f5] p-4 lg:mt-16">
-        <p className="truncate px-2 text-xs text-slate-500" title={owner.email}>
+      <div className="mt-6 border-t border-border p-4 lg:mt-16">
+        <p className="truncate px-2 text-xs text-muted-foreground" title={owner.email}>
           {owner.email}
         </p>
         <Button

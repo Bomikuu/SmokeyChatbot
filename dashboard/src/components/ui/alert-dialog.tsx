@@ -1,3 +1,5 @@
+import { useShadowFocusScope } from "@/sdk/shadowFocus";
+import { useOverlayContainer } from "@/sdk/OverlayProvider";
 import * as React from "react";
 import { cn } from "cn";
 import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
@@ -17,7 +19,10 @@ const AlertDialogTrigger = ({
 const AlertDialogPortal = ({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Portal>) => {
-  return <AlertDialogPrimitive.Portal data-slot="alert-dialog-portal" {...props} />;
+  const container = useOverlayContainer();
+  return (
+    <AlertDialogPrimitive.Portal container={container} data-slot="alert-dialog-portal" {...props} />
+  );
 };
 
 const AlertDialogOverlay = ({
@@ -37,16 +42,19 @@ const AlertDialogOverlay = ({
 };
 
 const AlertDialogContent = ({
+  ref,
   className,
   size = "default",
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
   size?: "default" | "sm";
 }) => {
+  const shadowFocusRef = useShadowFocusScope(ref);
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
       <AlertDialogPrimitive.Content
+        ref={shadowFocusRef}
         data-slot="alert-dialog-content"
         data-size={size}
         className={cn(

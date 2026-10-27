@@ -4,6 +4,13 @@ import { DeleteConfirmation } from "@/components/common/DeleteConfirmation";
 import { Field } from "@/components/common/Field";
 import { Notice } from "@/components/common/Notice";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,7 +71,7 @@ export const SiteSettings = ({ site, onSave, onDelete }: SiteSettingsProps) => {
       <Card>
         <CardHeader>
           <CardTitle>Site settings</CardTitle>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Choose what Smokey answers and where the widget can run.
           </p>
         </CardHeader>
@@ -82,11 +89,16 @@ export const SiteSettings = ({ site, onSave, onDelete }: SiteSettingsProps) => {
               label="Answer mode"
               help="Portfolio and store modes answer only from approved sources. General mode answers broad questions without live browsing."
             >
-              <select value={mode} onChange={(event) => setMode(event.target.value as AnswerMode)}>
-                <option value="portfolio">Portfolio</option>
-                <option value="store">Store</option>
-                <option value="general">General</option>
-              </select>
+              <Select value={mode} onValueChange={(value) => setMode(value as AnswerMode)}>
+                <SelectTrigger className="h-10 w-full" aria-label="Answer mode">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="portfolio">Portfolio</SelectItem>
+                  <SelectItem value="store">Store</SelectItem>
+                  <SelectItem value="general">General</SelectItem>
+                </SelectContent>
+              </Select>
             </Field>
             <Field
               label="Allowed website origins"
@@ -112,7 +124,7 @@ export const SiteSettings = ({ site, onSave, onDelete }: SiteSettingsProps) => {
           <CardTitle>Delete this site</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-between gap-4">
-          <p className="max-w-lg text-sm text-slate-500">
+          <p className="max-w-lg text-sm text-muted-foreground">
             Removes the chatbot, uploaded sources, mascot asset, and its indexed knowledge. This
             cannot be undone.
           </p>

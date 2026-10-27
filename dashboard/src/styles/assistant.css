@@ -1,0 +1,15 @@
+@import "./launcher.css";
+@import "./shared.css";
+@import "./shadow-properties.css";
+
+:host {
+  display: block;
+  margin: 0;
+  min-width: 320px;
+  line-height: 1.5;
+}
+@layer base {
+  :host {
+    @apply font-sans bg-background text-foreground;
+  }
+}

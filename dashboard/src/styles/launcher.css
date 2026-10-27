@@ -1,0 +1,28 @@
+.smokey-floating {
+  position: fixed;
+  right: calc(24px + env(safe-area-inset-right, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px) + var(--smokey-bottom-offset, 0px));
+  z-index: 40;
+}
+@media (max-width: 639px) {
+  .smokey-floating {
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px) + var(--smokey-bottom-offset, 0px));
+    max-width: calc(100vw - 32px);
+  }
+}
+[data-slot="sheet-content"],
+[data-slot="dialog-content"] {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+[data-slot="sheet-content"][data-side="right"].smokey-assistant-drawer {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+}
+@media (min-width: 640px) {
+  [data-slot="sheet-content"][data-side="right"].smokey-assistant-drawer {
+    max-width: 28rem;
+  }
+}

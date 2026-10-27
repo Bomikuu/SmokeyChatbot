@@ -23,12 +23,12 @@ export const Install = ({ site }: { site: Site }) => {
     <Card>
       <CardHeader>
         <CardTitle>Install SmokeyChatBot</CardTitle>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           The widget mounts into your page directly. It does not use an embed or iframe.
         </p>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-[#2149dc]">
+        <div className="rounded-lg border border-primary/30 bg-accent px-4 py-3 text-sm text-primary">
           First add your website origin in Site settings. Serve this website over HTTPS in
           production.
         </div>
@@ -46,7 +46,7 @@ export const Install = ({ site }: { site: Site }) => {
               Copy
             </Button>
           </div>
-          <pre className="overflow-x-auto rounded-lg bg-[#0b1733] p-4 text-xs leading-6 text-white">
+          <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-6 text-foreground">
             <code>{script}</code>
           </pre>
           <p className="field-help">Place the script before your closing body tag.</p>
@@ -65,12 +65,12 @@ export const Install = ({ site }: { site: Site }) => {
               Copy
             </Button>
           </div>
-          <pre className="overflow-x-auto rounded-lg bg-[#0b1733] p-4 text-xs leading-6 text-white">
+          <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-6 text-foreground">
             <code>{npm}</code>
           </pre>
         </div>
         <Notice message={copied} />
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           Replace the local package path with a Git package URL when you publish this repository.
         </p>
       </CardContent>

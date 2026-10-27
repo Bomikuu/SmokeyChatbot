@@ -1,0 +1,14 @@
+@import "./shared.css";
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

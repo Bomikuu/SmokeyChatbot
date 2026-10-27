@@ -4,6 +4,15 @@ import { deleteMascot, uploadMascot } from "@/api/assets";
 import { Field } from "@/components/common/Field";
 import { Notice } from "@/components/common/Notice";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { MascotStatus } from "@/components/common/MascotStatus";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { errorMessage } from "@/lib/errors";
@@ -114,7 +123,7 @@ export const Appearance = ({ site, onSave }: AppearanceProps) => {
       <Card>
         <CardHeader>
           <CardTitle>Appearance</CardTitle>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Keep Smokey, bring your own mascot, or use a standard chat button.
           </p>
         </CardHeader>
@@ -123,15 +132,16 @@ export const Appearance = ({ site, onSave }: AppearanceProps) => {
             <Field label="Launcher">
               <div className="grid gap-2 sm:grid-cols-3">
                 {launchers.map(({ value, label }) => (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={value}
                     type="button"
                     onClick={() => setMode(value)}
                     aria-pressed={mode === value}
-                    className={`rounded-lg border px-3 py-4 text-left text-sm font-semibold transition ${mode === value ? "border-[#2f5bff] bg-[#eff6ff] text-[#2149dc]" : "border-[#dce4ef] bg-white text-slate-600 hover:border-slate-400"}`}
+                    className={`rounded-lg border px-3 py-4 text-left text-sm font-semibold transition ${mode === value ? "border-primary bg-accent text-primary" : "border-border bg-card text-muted-foreground hover:border-ring"}`}
                   >
                     {label}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </Field>
@@ -156,26 +166,29 @@ export const Appearance = ({ site, onSave }: AppearanceProps) => {
               </Field>
               <Field label="Desktop movement" help="Mobile visitors get a stationary launcher.">
                 <label className="flex h-10 items-center gap-3 text-sm font-normal">
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={roaming}
-                    onChange={(event) => setRoaming(event.target.checked)}
-                    className="size-4 accent-[#2f5bff]"
+                    onCheckedChange={(value) => setRoaming(value === true)}
                   />
                   Allow mascot to roam
                 </label>
               </Field>
             </div>
             {mode === "custom" && (
-              <div className="space-y-5 rounded-lg border border-[#dce4ef] bg-[#f8fafc] p-5">
+              <div className="space-y-5 rounded-lg border border-border bg-muted p-5">
                 <Field label="Custom image type">
-                  <select
+                  <Select
                     value={assetType}
-                    onChange={(event) => setAssetType(event.target.value as AssetType)}
+                    onValueChange={(value) => setAssetType(value as AssetType)}
                   >
-                    <option value="static">Static image</option>
-                    <option value="sprite">Animated sprite sheet</option>
-                  </select>
+                    <SelectTrigger className="h-10 w-full" aria-label="Custom image type">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="static">Static image</SelectItem>
+                      <SelectItem value="sprite">Animated sprite sheet</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </Field>
                 {assetType === "sprite" && (
                   <>
@@ -199,7 +212,7 @@ export const Appearance = ({ site, onSave }: AppearanceProps) => {
                         />
                       </Field>
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground">
                       Frame positions start at 0 in the top-left corner. Set walking frames for
                       animation.
                     </p>
@@ -233,6 +246,9 @@ export const Appearance = ({ site, onSave }: AppearanceProps) => {
                 )}
               </div>
             )}
+            {busy && (
+              <MascotStatus state="searching" label="Saving your mascot settings…" site={site} />
+            )}
             <Notice message={notice} />
             <Notice message={error} error />
             <Button type="submit" disabled={busy}>
@@ -241,16 +257,16 @@ export const Appearance = ({ site, onSave }: AppearanceProps) => {
           </form>
 
           {mode === "custom" && (
-            <div className="space-y-3 border-t border-[#e2e8f0] pt-6">
+            <div className="space-y-3 border-t border-border pt-6">
               <p className="text-sm font-semibold">Mascot image</p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 Upload a public PNG or WebP image under 5 MB. For sprite sheets, each grid cell
                 should be the same size.
               </p>
               <div className="flex flex-wrap items-center gap-3">
-                <label className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-md border border-[#cbd5e1] bg-white px-4 text-sm font-semibold hover:bg-slate-50">
+                <label className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-md border border-input bg-card px-4 text-sm font-semibold hover:bg-muted">
                   <ImagePlus size={16} /> Upload image
-                  <input
+                  <Input
                     type="file"
                     accept="image/png,image/webp"
                     className="sr-only"
